@@ -5,8 +5,7 @@ Simple tools for working with sequence data at CIGENE.
 ### **Slurmtemp.py**
 Command line tool for sending simple yet CPU itensive jobs to the CIGENE cluster.
 
-####Usage: `Slurmtemp.py "commands" [n threads as integer]`
-
+Usage: `Slurmtemp.py "commands" [n threads as integer]`
 type `Slurmtemp.py -h` for command line help.
 
 ####Installation
