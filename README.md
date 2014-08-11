@@ -7,6 +7,7 @@ Command line tool for sending simple yet CPU itensive jobs to the CIGENE cluster
 You can modify job name, log name and number and CPUs for the job with command line options.
 
 Usage: `Slurmtemp.py "commands" [n threads as integer]`
+
 type `Slurmtemp.py -h` for command line help.
 
 
