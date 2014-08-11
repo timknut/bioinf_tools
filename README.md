@@ -14,9 +14,10 @@ type `Slurmtemp.py -h` for command line help.
 ####Installation
 **Make shure you have a bin folder in your HOME dir. `~/bin/`**
 ```bash
+cd ~/
 git clone git@github.com:timknut/bioinf_tools.git # Clone from github
 cd ~/bin/
-ln -s [path_to_bioinf_tools/Slurmtemp.py] # Make symlink to Executable.
+ln -s ~/bioinf_tools/Slurmtemp.py # Make symlink to Executable.
 ```
 
 ####Example:
