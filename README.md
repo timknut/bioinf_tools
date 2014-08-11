@@ -8,6 +8,7 @@ Command line tool for sending simple yet CPU itensive jobs to the CIGENE cluster
 Usage: `Slurmtemp.py "commands" [n threads as integer]`
 type `Slurmtemp.py -h` for command line help.
 
+
 ####Installation
 **Make shure you have a bin folder in your HOME dir. `~/bin/`**
 ```bash
