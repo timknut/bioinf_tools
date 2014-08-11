@@ -1,29 +1,37 @@
 #!/bin/env python
+"""
+Created on Fri Aug  8 04:20:47 2014
 
-# Sends your unix command in a slurm script to Cluster
-# usage: SlurmTemp.py "unix_command" [threads]
+@author: Tim Knutsen
+"""
 
 import os
-import sys
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("unix_command", help = 'needs to be in "" if multiple arguments command', 
-	type = str)
-parser.add_argument("threads", type = int)
+parser.add_argument("unix_command", help = '- command needs to be in "" if multiple arguments',
+        type = str)
+parser.add_argument("CPUs", help = "- number of CPUs as integer", type = int)
+parser.add_argument("-j", "--jobname", help = "Custom SLURM job name", type = str)
+        # default = str("Slurmtemp"))
 
 args = parser.parse_args()
-args
-#parser.parse_args()
-#print(args.unix_command)
+template_text = """#!/bin/bash -x 
+#SBATCH -J %s 
+#SBATCH -N 1 
+#SBATCH -n %i
 
-command = sys.argv[1]
-threads = sys.argv[2] ## Use som version of sprintf to manipulate the #SBATCH -n string.
-	
-with open("slurm_template", "w") as template:
-    template.write("#!/bin/bash -x\n#SBATCH -J SlurmTemp\n#SBATCH -N 1\n#SBATCH -n " + threads + "\n" + str(command) + "\n")
+%s""" % (args.jobname, args.CPUs, args.unix_command)
+
+if args.jobname:
+    custom_SO = "#SBATCH --output=%s_%%j.out" % (args.jobname)
+    with open("slurm_template", "w") as template:
+        template.write(template_text + "\n" + custom_SO)
+    print(template_text + "\n"+ custom_SO)	
+else:
+    with open("slurm_template", "w") as template:
+       	template.write(template_text)
+    print(template_text)
 
 os.system("sbatch slurm_template")
 os.remove("slurm_template")
-
-
