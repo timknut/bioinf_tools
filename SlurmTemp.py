@@ -11,7 +11,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("unix_command", help = '- command needs to be in "" if multiple arguments',
         type = str)
-parser.add_argument("-n", "--n-cpus", help = "- number of CPUs as integer", type = int, default = 1)
+parser.add_argument("-n", "--cpus", help = "- number of CPUs as integer", type = int, default = 1)
 parser.add_argument("-j", "--jobname", help = "Custom SLURM job name", type = str)
         # default = str("Slurmtemp"))
 
@@ -21,7 +21,7 @@ template_text = """#!/bin/bash -x
 #SBATCH -N 1 
 #SBATCH -n %i
 
-%s""" % (args.jobname, args.CPUs, args.unix_command)
+%s""" % (args.jobname, args.cpus, args.unix_command)
 
 if args.jobname:
     custom_SO = "#SBATCH --output=%s_%%j.out" % (args.jobname)
