@@ -11,7 +11,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("unix_command", help = '- command needs to be in "" if multiple arguments',
         type = str)
-parser.add_argument("CPUs", help = "- number of CPUs as integer", type = int)
+parser.add_argument("-n", "--n-cpus", help = "- number of CPUs as integer", type = int, default = 1)
 parser.add_argument("-j", "--jobname", help = "Custom SLURM job name", type = str)
         # default = str("Slurmtemp"))
 
