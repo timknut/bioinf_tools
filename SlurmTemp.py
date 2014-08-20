@@ -34,4 +34,4 @@ else:
     print(template_text)
 
 os.system("sbatch slurm_template")
-os.remove("slurm_template")
+#os.remove("slurm_template")
