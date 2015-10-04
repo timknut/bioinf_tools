@@ -1,12 +1,14 @@
 #!/bin/bash
 if [[ $# -eq 0 ]] ; then
-    echo usage: $(basename $0) [vcf-file] [vcf-out]
+    echo usage: $(basename $0) [vcf-file]
     exit 0
 fi
 
 
+
+
 vcf=$1
-vcfout=$2
+vcfout=`dirname $vcf`/`basename $vcf .vcf`.snpeff.vcf          # Output VCF file (annotated by GATK)
 java -Xmx4g -jar \
 	 ~tikn/bioinf_tools/snpeff/snpEff/snpEff.jar ann \
 	-c ~tikn/bioinf_tools/snpeff/snpEff/snpEff.config \
