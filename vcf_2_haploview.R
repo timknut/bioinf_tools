@@ -13,12 +13,12 @@
 ## ID2	G	A
 
 # Set lib.path for use on Cigene cluster.
-.libPaths( c( .libPaths(), "/mnt/users/tikn/R/x86_64-redhat-linux-gnu-library/3.2") )
+.libPaths( c( .libPaths(), "/mnt/users/tikn/R/x86_64-unknown-linux-gnu-library/3.2") )
 library(argparser, quietly=TRUE)
 # Create a parser
 p <- arg_parser(
 "Convert VCF file to Haplovew Haps format. Detects if file is gzipped.
-Appends .dat and locusinfo.txt to output files.")
+Appends .dat and locusinfo.txt to input VCF prefix.")
 # Add command line arguments
 p <- add_argument(p, "VCF", help="Phased VCF file to convert.", type="character")
 # Parse the command line arguments
