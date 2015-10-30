@@ -12,10 +12,13 @@
 ## ID2	G	A
 ## ID2	G	A
 
-# Set lib.path for use on Cigene cluster.
+
+# Set lib.paths for use on Cigene cluster. -------------------------------
 .libPaths( c( .libPaths(), "/mnt/users/tikn/R/x86_64-unknown-linux-gnu-library/3.2") )
+geno2alleles <- "~tikn/bioinf_tools/freebayes/vcflib/bin/vcfgeno2alleles"
+
+# Create a parser ---------------------------------------------------------
 library(argparser, quietly=TRUE)
-# Create a parser
 p <- arg_parser(
 "Convert VCF file to Haplovew Haps format. Detects if file is gzipped.
 Appends .dat and locusinfo.txt to input VCF prefix.")
@@ -25,6 +28,7 @@ p <- add_argument(p, "VCF", help="Phased VCF file to convert.", type="character"
 argv <- parse_args(p)
 vcf <- argv$VCF
 
+# Load required packages --------------------------------------------------
 load_packages <- function(){
 require(data.table, quietly = T)
 library(plyr, quietly = T)
@@ -33,22 +37,23 @@ library(splitstackshape, quietly = T)
 suppressPackageStartupMessages(library(dplyr, quietly = T))
 }
 
-load_packages() ;  cat("\nLoading a perverse number of packages for this trivial task\n\n")
+load_packages() #;  cat("\nLoading a perverse number of packages for this trivial task\n\n")
 #vcf <- "example_LD_haploview_10_snps_beagle.vcf.gz"
 #vcf <- "FA_sign_variants_allelic_primitives_Q30.with_ID_exclude_3454_1893_GQ30.snps.noprim_beaglephased.vcf.gz"
-geno2alleles <- "~tikn/bioinf_tools/freebayes/vcflib/bin/vcfgeno2alleles"
-dict <- c("A" = 1, "C" = 2, "G" = 3, "T" = 4, "." = 0) # haploview alleles.
 
+
+# Set functions and variables ---------------------------------------------
 gzipped <- ifelse(str_detect(vcf, "vcf$"), "cat", "zcat")
-## Skip ## in VCF text or zipped and convert 0/1 genotypes to ACGT.
-command <- sprintf("%s  %s | %s | grep -v '##'", gzipped, vcf, geno2alleles)
+dict <- c("A" = 1, "C" = 2, "G" = 3, "T" = 4, "." = 0) # haploview alleles.
+command <- sprintf("%s  %s | %s | grep -v '##'", gzipped, vcf, geno2alleles) ## Skip ## in VCF text or zipped and convert 0/1 genotypes to ACGT.
 
 # function for writing datafiles
 write_data <- function(df,filename) {
 	write.table(df,file = filename, row.names = F, col.names = F, quote = F, sep = " ")
 }
 
-# Read VCF
+
+# Read, convert and write files. ------------------------------------------
 infile <- fread(command, header = T, sep = "\t")
 
 #system(sprintf("cat %s", vcf))
@@ -71,4 +76,4 @@ write_data(outfile, filename = sprintf("%s.dat", outname))
 ## Write locus info file
 write_data(df = cbind(paste("marker_", 1:nrow(infile), sep = ""), select(infile,POS)),
 			  filename = sprintf("%s.locusinfo.txt", outname))
-	cat(sprintf("Convertion finished.\nOutput files are:\n%s.dat\n%s.locusinfo.txt\n\n", outname, outname))
+	cat(sprintf("Convertion finished.\nOutput files:\n%s.dat\n%s.locusinfo.txt\n\n", outname, outname))
